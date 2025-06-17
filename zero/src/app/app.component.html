@@ -1,21 +1,44 @@
 <div class="container p-2 m-2">
+  <form>
+    <input type="'text" [(ngModel)]="newWishText" name="wishingText" />
+    <button (click)="$event.preventDefault(); addItem()">Add wish</button>
+  </form>
+
+<div class="row mt-3">
+  <div class="col-sm-2">
+    <select class="form-select" [(ngModel)]="listFilters" (ngModelChange)="filterChanged($event)">
+      <option value="all" >All</option>
+      <option value="not_comp">Unfulfilled</option>
+      <option value="comp">Fulfilled</option>
+    </select>
+  </div>
+</div>
+  
+
   <div *ngIf="items.length === 0; else showItems">
     There are no items please click the above to add a new Item
   </div>
-
   <ng-template #showItems>
-    <ul class="wish-list" *ngFor="let item of items; index as count">
-      <li>
-        <div class="form-check">
-          <label class="form-check-label"></label>
-          <input
-            class="checkbox"
-            type="checkbox"
-            [checked]="item.isComplete"
-          />
-          {{ item.wishText }}
-        </div>
-      </li>
-    </ul>
+    <div class="mt-5">
+      <ul class="wish-list" *ngFor="let item of items; index as count">
+        <li>
+          <div class="form-check">
+            <label class="form-check-label"></label>
+            <input
+              class="checkbox"
+              type="checkbox"
+              [attr.data-index]="count"
+              [checked]="item.isComplete"
+              (click)="toggleItem(item)"
+            />
+            {{ item.wishText }}
+          </div>
+        </li>
+      </ul>
+      <section>
+        Number of items done :
+        {{ completedItems }}
+      </section>
+    </div>
   </ng-template>
 </div>
